@@ -2,13 +2,13 @@
 
 A professional SaaS-style web platform focused on Media and Information Literacy, built with React, Tailwind CSS, and Firebase.
 
-## 🎯 Overview
+## Overview
 
 InfoSphere empowers individuals with the critical thinking skills and tools needed to navigate the complex information landscape in the AI age. The platform provides comprehensive learning resources, interactive quizzes, fact-checking tools, and community discussions.
 
-## ✨ Features
+## Features
 
-### 🏠 Landing Page
+### Landing Page
 - **Hero Section**: Compelling headline and call-to-action
 - **About Us**: Platform mission and purpose
 - **Why This Platform**: Problem statement and solution overview
@@ -16,7 +16,7 @@ InfoSphere empowers individuals with the critical thinking skills and tools need
 - **Partners Banner**: Placeholder for partner organizations
 - **Journey Overview**: Three main sections (Learn, Test, Check)
 
-### 📚 Learn Section
+### Learn Section
 - **Structured Micro-courses**: Netflix-style tile layout
 - **Course Categories**:
   - Spotting Fake News (3 lessons)
@@ -25,7 +25,7 @@ InfoSphere empowers individuals with the critical thinking skills and tools need
 - **Interactive Lessons**: Video content, text, and "Learn More" links
 - **Progress Tracking**: Course completion and quiz integration
 
-### 🧪 Test Section
+### Test Section
 - **Three Difficulty Levels**: Beginner, Intermediate, Advanced
 - **Interactive Quizzes**: 10 questions per level with instant feedback
 - **Progress Tracking**: Visual progress bars and score tracking
@@ -33,7 +33,7 @@ InfoSphere empowers individuals with the critical thinking skills and tools need
 - **Results Page**: Score display with leaderboard integration
 - **Question of the Day**: Daily rotating questions with community discussion
 
-### 🔍 Check Section (Fact-Check Tool)
+### Check Section (Fact-Check Tool)
 - **Multi-format Input**: URLs, headlines, and text content
 - **Credibility Assessment**: 
   - Trusted sources → "This source is credible"
@@ -42,19 +42,19 @@ InfoSphere empowers individuals with the critical thinking skills and tools need
 - **Detailed Explanations**: Clear reasoning and recommendations
 - **Additional Resources**: Links to fact-checking organizations
 
-### 👥 Community Section
+### Community Section
 - **Discussion Threads**: Linked to Question of the Day
 - **Comment System**: Name + message format
 - **Community Guidelines**: Clear rules and expectations
 - **Firebase Integration**: Real-time comments and interactions
 
-### 📊 Leaderboard
+### Leaderboard
 - **Global Rankings**: User scores and achievements
 - **Filtering Options**: Timeframes and difficulty levels
 - **Statistics**: Total participants, highest scores, averages
 - **Badge Display**: Visual representation of user achievements
 
-## 🛠️ Technology Stack
+## 🛠 Technology Stack
 
 - **Frontend**: React 18 with Vite
 - **Styling**: Tailwind CSS v3
@@ -63,7 +63,7 @@ InfoSphere empowers individuals with the critical thinking skills and tools need
 - **Backend**: Firebase (Firestore, Authentication)
 - **Deployment**: Firebase Hosting
 
-## 🚀 Getting Started
+## Getting Started
 
 ### Prerequisites
 - Node.js (v16 or higher)
@@ -95,7 +95,7 @@ InfoSphere empowers individuals with the critical thinking skills and tools need
 5. **Open your browser**
    Navigate to `http://localhost:5173`
 
-## 📁 Project Structure
+## Project Structure
 
 ```
 infosphere/
@@ -121,7 +121,7 @@ infosphere/
 └── package.json
 ```
 
-## 🎨 Design System
+## Design System
 
 ### Color Palette
 - **Primary**: Blue shades (primary-50 to primary-900)
@@ -141,7 +141,7 @@ infosphere/
 - **Navigation**: Responsive navbar with mobile menu
 - **Forms**: Clean, accessible form elements
 
-## 🔧 Configuration
+## Configuration
 
 ### Firebase Setup
 1. Create a new Firebase project
@@ -167,14 +167,14 @@ The project uses Tailwind CSS v3 with custom configuration:
 - Responsive design utilities
 - Custom component classes
 
-## 📱 Responsive Design
+## Responsive Design
 
 The platform is fully responsive and works seamlessly on:
 - **Desktop**: Full-featured experience
 - **Tablet**: Optimized layouts
 - **Mobile**: Touch-friendly interface
 
-## 🚀 Deployment
+## Deployment
 
 ### Firebase Hosting
 1. Install Firebase CLI:
@@ -194,7 +194,7 @@ The platform is fully responsive and works seamlessly on:
    firebase deploy
    ```
 
-## 🤝 Contributing
+## Contributing
 
 1. Fork the repository
 2. Create a feature branch
@@ -202,21 +202,17 @@ The platform is fully responsive and works seamlessly on:
 4. Test thoroughly
 5. Submit a pull request
 
-## 📄 License
+## License
 
 This project is licensed under the MIT License.
 
-## 🙏 Acknowledgments
+## Acknowledgments
 
 - **UNESCO**: For media literacy guidelines
 - **FactCheck.org**: For fact-checking methodologies
 - **Poynter Institute**: For journalism standards
 - **International Fact-Checking Network**: For best practices
 
-## 📞 Support
+## Support
 
 For support and questions, please contact the development team or create an issue in the repository.
-
----
-
-**Built with ❤️ for Media & Information Literacy**
