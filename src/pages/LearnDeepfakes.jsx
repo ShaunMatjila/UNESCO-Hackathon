@@ -40,7 +40,6 @@ const LearnDeepfakes = () => {
           <h3>Why Deepfakes Are Concerning:</h3>
           <p>Deepfakes can be used for misinformation, fraud, identity theft, and manipulation of public opinion. They pose a significant threat to trust in media and can have serious real-world consequences.</p>
         `,
-        videoUrl: '#',
         resources: [
           { name: 'Deepfake Technology Guide', type: 'PDF', url: '#' },
           { name: 'AI Media Types Chart', type: 'Infographic', url: '#' }
@@ -79,7 +78,6 @@ const LearnDeepfakes = () => {
             <li><strong>Forensic Analysis:</strong> Examine pixel patterns and compression artifacts</li>
           </ul>
         `,
-        videoUrl: '#',
         resources: [
           { name: 'Detection Checklist', type: 'PDF', url: '#' },
           { name: 'Visual Red Flags Guide', type: 'Infographic', url: '#' }
@@ -118,7 +116,6 @@ const LearnDeepfakes = () => {
             <li>Support research into detection and prevention</li>
           </ul>
         `,
-        videoUrl: '#',
         resources: [
           { name: 'Future Trends Report', type: 'PDF', url: '#' },
           { name: 'Protection Strategies', type: 'Document', url: '#' }
@@ -218,7 +215,7 @@ const LearnDeepfakes = () => {
                     to="/test"
                     className="w-full bg-primary-600 hover:bg-primary-700 text-white px-6 py-3 rounded-xl font-medium transition-all duration-200 hover:shadow-lg hover:shadow-primary-500/25 flex items-center justify-center space-x-2"
                   >
-                    <Play className="h-4 w-4" />
+                    <Brain className="h-4 w-4" />
                     <span>Take Quiz</span>
                   </Link>
                 </div>
@@ -391,11 +388,6 @@ const LearnDeepfakes = () => {
               </button>
 
               <div className="flex space-x-4">
-                <button className="bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-xl font-medium transition-all duration-200 hover:shadow-lg hover:shadow-green-500/25 flex items-center space-x-2">
-                  <Play className="h-4 w-4" />
-                  <span>Watch Video</span>
-                </button>
-                
                 <button
                   onClick={() => handleLessonComplete(courseData.lessons[currentLesson].id)}
                   className={`px-6 py-3 rounded-xl font-medium transition-all duration-200 flex items-center space-x-2 ${

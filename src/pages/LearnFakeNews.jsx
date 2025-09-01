@@ -198,7 +198,7 @@ const LearnFakeNews = () => {
                     to="/test"
                     className="w-full bg-primary-600 hover:bg-primary-700 text-white px-6 py-3 rounded-xl font-medium transition-all duration-200 hover:shadow-lg hover:shadow-primary-500/25 flex items-center justify-center space-x-2"
                   >
-                    <Play className="h-4 w-4" />
+                    <AlertTriangle className="h-4 w-4" />
                     <span>Take Quiz</span>
                   </Link>
                 </div>
