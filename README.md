@@ -54,14 +54,13 @@ InfoSphere empowers individuals with the critical thinking skills and tools need
 - **Statistics**: Total participants, highest scores, averages
 - **Badge Display**: Visual representation of user achievements
 
-## 🛠 Technology Stack
+## Technology Stack
 
 - **Frontend**: React 18 with Vite
 - **Styling**: Tailwind CSS v3
 - **Icons**: Lucide React
 - **Routing**: React Router DOM
-- **Backend**: Firebase (Firestore, Authentication)
-- **Deployment**: Firebase Hosting
+- **Deployment**: Vercel
 
 ## Getting Started
 
