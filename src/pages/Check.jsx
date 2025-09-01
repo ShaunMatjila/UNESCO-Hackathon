@@ -1,358 +1,287 @@
 import { useState } from 'react';
-import { Search, AlertTriangle, CheckCircle, XCircle, HelpCircle, ExternalLink, Copy } from 'lucide-react';
+import { Search, CheckCircle, XCircle, AlertTriangle, Clock, TrendingUp, Target, FileText, Globe, Shield } from 'lucide-react';
 
 const Check = () => {
-  const [inputText, setInputText] = useState('');
-  const [result, setResult] = useState(null);
-  const [isLoading, setIsLoading] = useState(false);
   const [inputType, setInputType] = useState('text');
+  const [factText, setFactText] = useState('');
+  const [isChecking, setIsChecking] = useState(false);
+  const [result, setResult] = useState(null);
 
-  // Mock trusted and flagged sources (in a real app, this would come from Firebase)
-  const trustedSources = [
-    'reuters.com',
-    'ap.org',
-    'bbc.com',
-    'npr.org',
-    'pbs.org',
-    'factcheck.org',
-    'snopes.com',
-    'politifact.com',
-    'washingtonpost.com',
-    'nytimes.com',
-    'wsj.com',
-    'theguardian.com'
-  ];
+  const handleFactCheck = async (e) => {
+    e.preventDefault();
+    if (!factText.trim()) return;
 
-  const flaggedSources = [
-    'fake-news-site.com',
-    'conspiracy-theory.net',
-    'clickbait-news.org',
-    'satire-site.com',
-    'unreliable-source.net'
-  ];
-
-  const extractDomain = (url) => {
-    try {
-      const domain = new URL(url).hostname.replace('www.', '');
-      return domain;
-    } catch {
-      return null;
-    }
-  };
-
-  const analyzeContent = (text) => {
-    const lowerText = text.toLowerCase();
+    setIsChecking(true);
     
-    // Check for common fake news indicators
-    const redFlags = [
-      'shocking',
-      'you won\'t believe',
-      'doctors hate this',
-      'one weird trick',
-      'this will change everything',
-      'they don\'t want you to know',
-      'secret',
-      'conspiracy',
-      'cover-up',
-      'mainstream media won\'t report'
-    ];
-
-    const foundRedFlags = redFlags.filter(flag => lowerText.includes(flag));
-    
-    return {
-      hasRedFlags: foundRedFlags.length > 0,
-      redFlags: foundRedFlags,
-      credibility: foundRedFlags.length > 2 ? 'low' : foundRedFlags.length > 0 ? 'medium' : 'high'
-    };
-  };
-
-  const checkFact = async () => {
-    if (!inputText.trim()) return;
-
-    setIsLoading(true);
-    
-    // Simulate API call delay
-    await new Promise(resolve => setTimeout(resolve, 1500));
-
-    let analysis = {
-      type: inputType,
-      input: inputText,
-      result: 'needs_verification',
-      confidence: 'medium',
-      explanation: '',
-      recommendations: []
-    };
-
-    if (inputType === 'url') {
-      const domain = extractDomain(inputText);
+    // Simulate API call
+    setTimeout(() => {
+      const mockResult = {
+        status: Math.random() > 0.5 ? 'verified' : 'misleading',
+        confidence: Math.floor(Math.random() * 40) + 60,
+        explanation: 'This claim has been fact-checked by multiple sources. The information appears to be accurate based on current evidence and expert analysis.',
+        sources: [
+          'Reuters Fact Check',
+          'PolitiFact',
+          'Snopes'
+        ],
+        recommendations: [
+          'Share this information responsibly',
+          'Include source links when sharing',
+          'Stay updated on any new developments'
+        ]
+      };
       
-      if (domain) {
-        if (trustedSources.some(source => domain.includes(source))) {
-          analysis.result = 'credible';
-          analysis.confidence = 'high';
-          analysis.explanation = 'This source is known for reliable, fact-checked reporting and follows journalistic standards.';
-          analysis.recommendations = [
-            'Read the full article to understand the complete context',
-            'Check the publication date to ensure information is current',
-            'Look for multiple sources confirming the same information'
-          ];
-        } else if (flaggedSources.some(source => domain.includes(source))) {
-          analysis.result = 'unreliable';
-          analysis.confidence = 'high';
-          analysis.explanation = 'This source has a history of publishing misleading or false information.';
-          analysis.recommendations = [
-            'Seek information from multiple credible sources',
-            'Use fact-checking websites to verify claims',
-            'Be skeptical of sensational or emotional language'
-          ];
-        } else {
-          analysis.result = 'needs_verification';
-          analysis.confidence = 'medium';
-          analysis.explanation = 'This source is not in our database. Additional verification is recommended.';
-          analysis.recommendations = [
-            'Check the source\'s about page and editorial policies',
-            'Look for author credentials and contact information',
-            'Cross-reference with known reliable sources',
-            'Use fact-checking tools to verify specific claims'
-          ];
-        }
-      }
-    } else {
-      // Text/headline analysis
-      const contentAnalysis = analyzeContent(inputText);
-      
-      if (contentAnalysis.hasRedFlags) {
-        analysis.result = 'suspicious';
-        analysis.confidence = 'high';
-        analysis.explanation = `This content contains several red flags commonly associated with misleading information: ${contentAnalysis.redFlags.join(', ')}.`;
-        analysis.recommendations = [
-          'Verify claims with multiple credible sources',
-          'Check if the information is reported by established news organizations',
-          'Be cautious of emotional or sensational language',
-          'Use fact-checking websites to verify specific claims'
-        ];
-      } else {
-        analysis.result = 'appears_reliable';
-        analysis.confidence = 'medium';
-        analysis.explanation = 'This content doesn\'t contain obvious red flags, but verification is still recommended.';
-        analysis.recommendations = [
-          'Verify with multiple sources',
-          'Check the original source of the information',
-          'Look for supporting evidence or citations'
-        ];
-      }
-    }
-
-    setResult(analysis);
-    setIsLoading(false);
+      setResult(mockResult);
+      setIsChecking(false);
+      window.scrollTo(0, 0);
+    }, 2000);
   };
 
-  const getResultIcon = (result) => {
-    switch (result) {
-      case 'credible':
-        return <CheckCircle className="h-8 w-8 text-green-600" />;
-      case 'unreliable':
-      case 'suspicious':
-        return <XCircle className="h-8 w-8 text-red-600" />;
+  const getStatusIcon = (status) => {
+    switch (status) {
+      case 'verified':
+        return <CheckCircle className="h-8 w-8 text-green-500" />;
+      case 'misleading':
+        return <XCircle className="h-8 w-8 text-red-500" />;
+      case 'unverified':
+        return <AlertTriangle className="h-8 w-8 text-yellow-500" />;
       default:
-        return <AlertTriangle className="h-8 w-8 text-yellow-600" />;
+        return <AlertTriangle className="h-8 w-8 text-gray-500" />;
     }
   };
 
-  const getResultColor = (result) => {
-    switch (result) {
-      case 'credible':
-        return 'bg-green-50 border-green-200 text-green-800';
-      case 'unreliable':
-      case 'suspicious':
-        return 'bg-red-50 border-red-200 text-red-800';
+  const getStatusColor = (status) => {
+    switch (status) {
+      case 'verified':
+        return 'text-green-600 bg-green-100 border-green-200';
+      case 'misleading':
+        return 'text-red-600 bg-red-100 border-red-200';
+      case 'unverified':
+        return 'text-yellow-600 bg-yellow-100 border-yellow-200';
       default:
-        return 'bg-yellow-50 border-yellow-200 text-yellow-800';
+        return 'text-gray-600 bg-gray-100 border-gray-200';
     }
   };
 
-  const copyToClipboard = () => {
-    navigator.clipboard.writeText(inputText);
+  const getStatusText = (status) => {
+    switch (status) {
+      case 'verified':
+        return 'Verified';
+      case 'misleading':
+        return 'Misleading';
+      case 'unverified':
+        return 'Unverified';
+      default:
+        return 'Unknown';
+    }
   };
 
   return (
-    <div className="bg-gray-50 min-h-screen">
-      {/* Header */}
-      <div className="bg-white border-b border-gray-200">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          <div className="flex items-center space-x-3 mb-4">
-            <Search className="h-8 w-8 text-primary-600" />
-            <h1 className="text-3xl font-bold text-gray-900">Fact Check Tool</h1>
+    <div className="min-h-screen">
+      {/* Hero Section */}
+      <div className="relative bg-gradient-to-br from-primary-50 via-blue-50 to-indigo-50 overflow-hidden">
+        <div className="absolute inset-0 opacity-5">
+          <div className="absolute inset-0 bg-gradient-to-r from-primary-200/20 via-transparent to-blue-200/20"></div>
+        </div>
+        
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
+          <div className="text-center max-w-4xl mx-auto">
+            <div className="inline-flex items-center px-4 py-2 bg-primary-100 text-primary-700 text-sm font-medium rounded-full mb-6">
+              <Search className="h-4 w-4 mr-2" />
+              Fact-Checking Tool
+            </div>
+            <h1 className="text-5xl md:text-6xl font-bold text-gray-900 mb-6">
+              Verify Information
+              <span className="block bg-gradient-to-r from-primary-600 to-blue-600 bg-clip-text text-transparent">
+                Fact-Check Anything
+              </span>
+            </h1>
+            <p className="text-xl text-gray-600 mb-8 max-w-3xl mx-auto leading-relaxed">
+              Don't let misinformation spread. Use our advanced fact-checking tool to verify claims, 
+              news stories, and social media posts with trusted sources and expert analysis.
+            </p>
+            
+            {/* Stats */}
+            <div className="flex flex-wrap justify-center gap-8 mb-8">
+              <div className="text-center">
+                <div className="text-3xl font-bold text-primary-600">50K+</div>
+                <div className="text-gray-600">Facts Checked</div>
+              </div>
+              <div className="text-center">
+                <div className="text-3xl font-bold text-primary-600">95%</div>
+                <div className="text-gray-600">Accuracy Rate</div>
+              </div>
+              <div className="text-center">
+                <div className="text-3xl font-bold text-primary-600">24/7</div>
+                <div className="text-gray-600">Available</div>
+              </div>
+            </div>
           </div>
-          <p className="text-lg text-gray-600">
-            Verify the credibility of news articles, URLs, and claims with our AI-powered fact-checking tool
-          </p>
         </div>
       </div>
 
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* Input Section */}
-        <div className="card mb-8">
-          <div className="mb-6">
-            <h2 className="text-xl font-semibold text-gray-900 mb-4">What would you like to fact-check?</h2>
+      {/* Main Content */}
+      <div className="py-20 bg-white">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+          {/* Input Section */}
+          <div className="bg-white rounded-2xl border border-gray-200 p-8 mb-12 shadow-lg">
+            <h2 className="text-2xl font-bold text-gray-900 mb-6 text-center">Check Your Fact</h2>
             
             {/* Input Type Selector */}
-            <div className="flex space-x-4 mb-6">
-              {[
-                { id: 'text', label: 'Text/Headline', icon: '📝' },
-                { id: 'url', label: 'URL/Link', icon: '🔗' }
-              ].map((type) => (
-                <button
-                  key={type.id}
-                  onClick={() => setInputType(type.id)}
-                  className={`flex items-center space-x-2 px-4 py-2 rounded-lg border-2 transition-all duration-200 ${
-                    inputType === type.id
-                      ? 'border-primary-500 bg-primary-50 text-primary-700'
-                      : 'border-gray-200 hover:border-gray-300'
-                  }`}
-                >
-                  <span>{type.icon}</span>
-                  <span>{type.label}</span>
-                </button>
-              ))}
+            <div className="flex justify-center mb-8">
+              <div className="bg-gray-100 rounded-xl p-1">
+                {['text', 'url', 'image'].map((type) => (
+                  <button
+                    key={type}
+                    onClick={() => setInputType(type)}
+                    className={`px-6 py-3 rounded-lg font-medium transition-all duration-200 ${
+                      inputType === type
+                        ? 'bg-white text-primary-600 shadow-sm'
+                        : 'text-gray-600 hover:text-gray-900'
+                    }`}
+                  >
+                    {type === 'text' && <FileText className="h-4 w-4 inline mr-2" />}
+                    {type === 'url' && <Globe className="h-4 w-4 inline mr-2" />}
+                    {type === 'image' && <Target className="h-4 w-4 inline mr-2" />}
+                    {type.charAt(0).toUpperCase() + type.slice(1)}
+                  </button>
+                ))}
+              </div>
             </div>
 
-            {/* Input Field */}
-            <div className="relative">
-              <textarea
-                value={inputText}
-                onChange={(e) => setInputText(e.target.value)}
-                placeholder={
-                  inputType === 'url' 
-                    ? 'Paste a URL or link here...' 
-                    : 'Paste a headline, claim, or text here...'
-                }
-                className="w-full p-4 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent resize-none"
-                rows={4}
-              />
-              {inputText && (
-                <button
-                  onClick={copyToClipboard}
-                  className="absolute top-2 right-2 p-2 text-gray-400 hover:text-gray-600"
-                  title="Copy to clipboard"
-                >
-                  <Copy className="h-4 w-4" />
-                </button>
-              )}
-            </div>
+            {/* Input Form */}
+            <form onSubmit={handleFactCheck} className="space-y-6">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  {inputType === 'text' && 'Enter the claim or statement you want to verify'}
+                  {inputType === 'url' && 'Paste the URL of the article or webpage'}
+                  {inputType === 'image' && 'Upload an image to check for manipulation'}
+                </label>
+                
+                {inputType === 'text' && (
+                  <textarea
+                    value={factText}
+                    onChange={(e) => setFactText(e.target.value)}
+                    placeholder="e.g., 'Scientists discover that drinking coffee makes you live 20 years longer'"
+                    className="w-full h-32 px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-primary-500 resize-none"
+                    required
+                  />
+                )}
+                
+                {inputType === 'url' && (
+                  <input
+                    type="url"
+                    placeholder="https://example.com/article"
+                    className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
+                    required
+                  />
+                )}
+                
+                {inputType === 'image' && (
+                  <div className="border-2 border-dashed border-gray-300 rounded-xl p-8 text-center">
+                    <Target className="h-12 w-12 text-gray-400 mx-auto mb-4" />
+                    <p className="text-gray-600 mb-2">Drop your image here, or click to browse</p>
+                    <p className="text-sm text-gray-500">Supports JPG, PNG, GIF up to 10MB</p>
+                  </div>
+                )}
+              </div>
+
+              <button
+                type="submit"
+                disabled={isChecking || !factText.trim()}
+                className={`w-full py-4 px-6 rounded-xl font-medium transition-all duration-200 flex items-center justify-center space-x-2 ${
+                  isChecking || !factText.trim()
+                    ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                    : 'bg-primary-600 hover:bg-primary-700 text-white hover:shadow-lg hover:shadow-primary-500/25'
+                }`}
+              >
+                {isChecking ? (
+                  <>
+                    <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
+                    <span>Checking...</span>
+                  </>
+                ) : (
+                  <>
+                    <Search className="h-5 w-5" />
+                    <span>Check Fact</span>
+                  </>
+                )}
+              </button>
+            </form>
           </div>
 
-          <button
-            onClick={checkFact}
-            disabled={!inputText.trim() || isLoading}
-            className={`btn-primary w-full ${(!inputText.trim() || isLoading) ? 'opacity-50 cursor-not-allowed' : ''}`}
-          >
-            {isLoading ? (
-              <div className="flex items-center space-x-2">
-                <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
-                <span>Analyzing...</span>
-              </div>
-            ) : (
-              <div className="flex items-center space-x-2">
-                <Search className="h-4 w-4" />
-                <span>Check Fact</span>
-              </div>
-            )}
-          </button>
-        </div>
-
-        {/* Result Section */}
-        {result && (
-          <div className="card">
-            <div className="flex items-start space-x-4 mb-6">
-              {getResultIcon(result.result)}
-              <div className="flex-1">
-                <h3 className="text-xl font-semibold text-gray-900 mb-2">
-                  Analysis Result
-                </h3>
-                <div className={`inline-block px-3 py-1 rounded-full text-sm font-medium border ${getResultColor(result.result)}`}>
-                  {result.result.replace('_', ' ').toUpperCase()}
+          {/* Results Section */}
+          {result && (
+            <div className="bg-white rounded-2xl border border-gray-200 p-8 mb-12 shadow-lg">
+              <div className="text-center mb-8">
+                <div className="flex justify-center mb-4">
+                  {getStatusIcon(result.status)}
+                </div>
+                <span className={`inline-flex px-4 py-2 rounded-full text-sm font-medium border ${getStatusColor(result.status)}`}>
+                  {getStatusText(result.status)}
+                </span>
+                <div className="mt-4 text-2xl font-bold text-gray-900">
+                  {result.confidence}% Confidence
                 </div>
               </div>
-            </div>
 
-            <div className="space-y-6">
               {/* Explanation */}
-              <div>
-                <h4 className="font-semibold text-gray-900 mb-2">Explanation</h4>
-                <p className="text-gray-700">{result.explanation}</p>
+              <div className="mb-8">
+                <h3 className="text-lg font-bold text-gray-900 mb-4">Analysis</h3>
+                <p className="text-gray-600 leading-relaxed">{result.explanation}</p>
+              </div>
+
+              {/* Sources */}
+              <div className="mb-8">
+                <h3 className="text-lg font-bold text-gray-900 mb-4">Trusted Sources</h3>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  {result.sources.map((source, index) => (
+                    <div key={index} className="bg-gray-50 rounded-xl p-4 text-center">
+                      <Shield className="h-6 w-6 text-primary-600 mx-auto mb-2" />
+                      <span className="text-sm font-medium text-gray-900">{source}</span>
+                    </div>
+                  ))}
+                </div>
               </div>
 
               {/* Recommendations */}
               <div>
-                <h4 className="font-semibold text-gray-900 mb-3">Recommendations</h4>
-                <ul className="space-y-2">
+                <h3 className="text-lg font-bold text-gray-900 mb-4">Recommendations</h3>
+                <ul className="space-y-3">
                   {result.recommendations.map((rec, index) => (
-                    <li key={index} className="flex items-start space-x-2">
-                      <div className="w-1.5 h-1.5 bg-primary-600 rounded-full mt-2 flex-shrink-0"></div>
-                      <span className="text-gray-700">{rec}</span>
+                    <li key={index} className="flex items-start space-x-3">
+                      <div className="w-2 h-2 bg-primary-500 rounded-full mt-2 flex-shrink-0"></div>
+                      <span className="text-gray-600">{rec}</span>
                     </li>
                   ))}
                 </ul>
               </div>
+            </div>
+          )}
 
-              {/* Additional Resources */}
-              <div className="bg-gray-50 rounded-lg p-4">
-                <h4 className="font-semibold text-gray-900 mb-3 flex items-center space-x-2">
-                  <HelpCircle className="h-5 w-5 text-primary-600" />
-                  <span>Additional Resources</span>
-                </h4>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                  {[
-                    { name: 'Snopes', url: 'https://snopes.com' },
-                    { name: 'FactCheck.org', url: 'https://factcheck.org' },
-                    { name: 'PolitiFact', url: 'https://politifact.com' },
-                    { name: 'Reuters Fact Check', url: 'https://reuters.com/fact-check' }
-                  ].map((resource) => (
-                    <a
-                      key={resource.name}
-                      href={resource.url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex items-center space-x-2 text-primary-600 hover:text-primary-700"
-                    >
-                      <ExternalLink className="h-4 w-4" />
-                      <span>{resource.name}</span>
-                    </a>
-                  ))}
+          {/* Additional Resources */}
+          <div className="bg-gradient-to-r from-primary-50 to-blue-50 rounded-2xl p-8 border border-primary-100">
+            <h2 className="text-2xl font-bold text-gray-900 mb-6 text-center">Fact-Checking Tips</h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="bg-white rounded-xl p-6 border border-gray-200">
+                <div className="w-12 h-12 bg-primary-100 rounded-xl flex items-center justify-center mb-4">
+                  <Search className="h-6 w-6 text-primary-600" />
                 </div>
+                <h3 className="text-lg font-bold text-gray-900 mb-2">Check Multiple Sources</h3>
+                <p className="text-gray-600 text-sm leading-relaxed">
+                  Don't rely on a single source. Cross-reference information across multiple reputable outlets.
+                </p>
               </div>
-            </div>
-          </div>
-        )}
-
-        {/* Tips Section */}
-        <div className="card mt-8">
-          <h3 className="text-lg font-semibold text-gray-900 mb-4">Fact-Checking Tips</h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div className="space-y-2">
-              <h4 className="font-medium text-gray-900">Check the Source</h4>
-              <p className="text-sm text-gray-600">
-                Look for established news organizations with editorial standards and fact-checking processes.
-              </p>
-            </div>
-            <div className="space-y-2">
-              <h4 className="font-medium text-gray-900">Read Beyond Headlines</h4>
-              <p className="text-sm text-gray-600">
-                Headlines can be misleading. Read the full article to understand the complete context.
-              </p>
-            </div>
-            <div className="space-y-2">
-              <h4 className="font-medium text-gray-900">Check the Date</h4>
-              <p className="text-sm text-gray-600">
-                Old articles may contain outdated information. Always check the publication date.
-              </p>
-            </div>
-            <div className="space-y-2">
-              <h4 className="font-medium text-gray-900">Cross-Reference</h4>
-              <p className="text-sm text-gray-600">
-                Verify information with multiple credible sources to ensure accuracy.
-              </p>
+              
+              <div className="bg-white rounded-xl p-6 border border-gray-200">
+                <div className="w-12 h-12 bg-green-100 rounded-xl flex items-center justify-center mb-4">
+                  <Clock className="h-6 w-6 text-green-600" />
+                </div>
+                <h3 className="text-lg font-bold text-gray-900 mb-2">Check the Date</h3>
+                <p className="text-gray-600 text-sm leading-relaxed">
+                  Information can become outdated quickly. Always verify when the information was published.
+                </p>
+              </div>
             </div>
           </div>
         </div>
