@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import { CheckCircle, XCircle, ArrowRight, BookOpen, Target, Trophy, Clock } from 'lucide-react';
 
 const Test = () => {
