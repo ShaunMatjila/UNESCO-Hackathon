@@ -1,253 +1,452 @@
 import { useState } from 'react';
-import { Users, MessageCircle, Calendar, Send, ThumbsUp, Share2, User } from 'lucide-react';
+import { Users, MessageCircle, Heart, Share2, TrendingUp, Award, Star, Clock, User, ThumbsUp } from 'lucide-react';
 
 const Community = () => {
-  const [newComment, setNewComment] = useState('');
-  const [userName, setUserName] = useState('');
-
-  // Mock data for the Question of the Day
-  const questionOfTheDay = {
-    id: 1,
-    question: "How do you verify the credibility of a news source you've never heard of before?",
-    date: new Date().toLocaleDateString(),
-    category: "Source Verification",
-    responses: 24,
-    likes: 156
-  };
-
-  // Mock comments data
-  const [comments, setComments] = useState([
+  const [activeTab, setActiveTab] = useState('discussions');
+  const [commentText, setCommentText] = useState('');
+  const [questionResponse, setQuestionResponse] = useState('');
+  const [showQuestionForm, setShowQuestionForm] = useState(false);
+  const [selectedDiscussion, setSelectedDiscussion] = useState(null);
+  const [showDiscussionDetail, setShowDiscussionDetail] = useState(false);
+  const [questionResponses, setQuestionResponses] = useState([
     {
       id: 1,
-      author: "MediaLiteracyPro",
-      content: "I always start by checking the 'About Us' page and looking for editorial policies. If they don't have clear standards or contact information, that's a red flag.",
-      timestamp: "2 hours ago",
-      likes: 12,
-      replies: 3
+      author: "FactChecker",
+      avatar: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150&h=150&fit=crop&crop=face",
+      content: "I always start by checking the source's about page and then cross-reference with multiple outlets.",
+      timeAgo: "1 hour ago",
+      likes: 12
     },
     {
       id: 2,
-      author: "FactChecker2024",
-      content: "Great question! I use a three-step process: 1) Check if they cite sources, 2) Look for author credentials, 3) Cross-reference with known reliable outlets.",
-      timestamp: "4 hours ago",
-      likes: 8,
-      replies: 1
-    },
-    {
-      id: 3,
-      author: "DigitalCitizen",
-      content: "I also check if they have a corrections policy. Reputable news organizations are transparent about their mistakes and have clear processes for corrections.",
-      timestamp: "6 hours ago",
-      likes: 15,
-      replies: 2
-    },
-    {
-      id: 4,
-      author: "NewsNavigator",
-      content: "Don't forget to check the domain age and look for any obvious bias in their reporting history. Sometimes you can find reviews from other fact-checking organizations.",
-      timestamp: "8 hours ago",
-      likes: 6,
-      replies: 0
+      author: "MediaMentor",
+      avatar: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=150&h=150&fit=crop&crop=face",
+      content: "Don't forget to check the author's credentials and look for any conflicts of interest.",
+      timeAgo: "2 hours ago",
+      likes: 8
     }
   ]);
 
-  const handleSubmitComment = (e) => {
+  const handleSubmitQuestionResponse = (e) => {
     e.preventDefault();
-    if (!newComment.trim() || !userName.trim()) return;
-
-    const newCommentObj = {
-      id: comments.length + 1,
-      author: userName,
-      content: newComment,
-      timestamp: "Just now",
-      likes: 0,
-      replies: 0
-    };
-
-    setComments([newCommentObj, ...comments]);
-    setNewComment('');
+    if (questionResponse.trim()) {
+      const newResponse = {
+        id: questionResponses.length + 1,
+        author: "You",
+        avatar: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=face",
+        content: questionResponse,
+        timeAgo: "Just now",
+        likes: 0
+      };
+      setQuestionResponses([newResponse, ...questionResponses]);
+      setQuestionResponse('');
+      setShowQuestionForm(false);
+    }
   };
 
-  const handleLike = (commentId) => {
-    setComments(comments.map(comment => 
-      comment.id === commentId 
-        ? { ...comment, likes: comment.likes + 1 }
-        : comment
-    ));
+  const handleViewDiscussion = (discussion) => {
+    setSelectedDiscussion(discussion);
+    setShowDiscussionDetail(true);
   };
+
+  const handleCloseDiscussion = () => {
+    setShowDiscussionDetail(false);
+    setSelectedDiscussion(null);
+  };
+
+  const communityData = {
+    questionOfTheDay: {
+      question: "What's your most effective method for verifying news sources?",
+      author: "MediaLiteracyExpert",
+      responses: 24,
+      likes: 156,
+      category: "Fact-Checking"
+    },
+    discussions: [
+      {
+        id: 1,
+        title: "How do you spot deepfakes in social media?",
+        author: "DigitalDetective",
+        avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=face",
+        content: "I've been seeing more AI-generated content lately. What are your go-to techniques for identifying deepfakes? I'm particularly interested in visual cues and tools that can help detect manipulated images and videos.",
+        category: "AI & Deepfakes",
+        responses: 18,
+        likes: 89,
+        timeAgo: "2 hours ago",
+        isPinned: true,
+        detailedResponses: [
+          {
+            id: 1,
+            author: "TechSleuth",
+            content: "Look for unnatural facial movements, especially around the eyes and mouth. Deepfakes often have subtle glitches in these areas.",
+            timeAgo: "1 hour ago",
+            likes: 15
+          },
+          {
+            id: 2,
+            author: "MediaAnalyst",
+            content: "Check for inconsistent lighting and shadows. AI often struggles with maintaining realistic lighting across the entire frame.",
+            timeAgo: "45 min ago",
+            likes: 12
+          },
+          {
+            id: 3,
+            author: "DeepfakeHunter",
+            content: "Use reverse image search and check if the same face appears in multiple unrelated contexts. Also, look for artifacts around the edges of faces.",
+            timeAgo: "30 min ago",
+            likes: 8
+          }
+        ]
+      },
+      {
+        id: 2,
+        title: "Best fact-checking tools for beginners?",
+        author: "NewsNovice",
+        avatar: "https://images.unsplash.com/photo-1494790108755-2616b612b786?w=150&h=150&fit=crop&crop=face",
+        content: "Just starting my media literacy journey. What tools would you recommend for someone new to fact-checking? I want to build good habits from the start.",
+        category: "Tools & Resources",
+        responses: 32,
+        likes: 124,
+        timeAgo: "5 hours ago",
+        isPinned: false,
+        detailedResponses: [
+          {
+            id: 1,
+            author: "FactCheckPro",
+            content: "Start with Snopes and FactCheck.org. They're reliable and easy to use. Also, learn to use Google's fact-checking tools.",
+            timeAgo: "4 hours ago",
+            likes: 23
+          },
+          {
+            id: 2,
+            author: "TruthSeeker",
+            content: "Don't forget about reverse image search! It's amazing how many fake images get shared. Google Images and TinEye are your friends.",
+            timeAgo: "3 hours ago",
+            likes: 18
+          },
+          {
+            id: 3,
+            author: "MediaMentor",
+            content: "Build a habit of checking multiple sources. If a story seems too good to be true, it probably is. Always verify before sharing.",
+            timeAgo: "2 hours ago",
+            likes: 14
+          }
+        ]
+      }
+    ]
+  };
+
+  const categories = [
+    { id: 'all', name: 'All Topics', count: 156 },
+    { id: 'fact-checking', name: 'Fact-Checking', count: 45 },
+    { id: 'ai-deepfakes', name: 'AI & Deepfakes', count: 32 },
+    { id: 'social-media', name: 'Social Media', count: 28 }
+  ];
 
   return (
-    <div className="bg-gray-50 min-h-screen">
-      {/* Header */}
-      <div className="bg-white border-b border-gray-200">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          <div className="flex items-center space-x-3 mb-4">
-            <Users className="h-8 w-8 text-primary-600" />
-            <h1 className="text-3xl font-bold text-gray-900">Community</h1>
+    <div className="min-h-screen">
+      <div className="relative bg-gradient-to-br from-primary-50 via-blue-50 to-indigo-50 overflow-hidden">
+        <div className="absolute inset-0 opacity-5">
+          <div className="absolute inset-0 bg-gradient-to-r from-primary-200/20 via-transparent to-blue-200/20"></div>
+        </div>
+        
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
+          <div className="text-center max-w-4xl mx-auto">
+            <div className="inline-flex items-center px-4 py-2 bg-primary-100 text-primary-700 text-sm font-medium rounded-full mb-6">
+              <Users className="h-4 w-4 mr-2" />
+              Community Hub
+            </div>
+            <h1 className="text-5xl md:text-6xl font-bold text-gray-900 mb-6">
+              Join the Discussion
+              <span className="block bg-gradient-to-r from-primary-600 to-blue-600 bg-clip-text text-transparent">
+                Media Literacy Community
+              </span>
+            </h1>
+            <p className="text-xl text-gray-600 mb-8 max-w-3xl mx-auto leading-relaxed">
+              Connect with fellow learners, share insights, and discuss the latest challenges in media literacy.
+            </p>
+            
+            <div className="flex flex-wrap justify-center gap-8 mb-8">
+              <div className="text-center">
+                <div className="text-3xl font-bold text-primary-600">2.4K+</div>
+                <div className="text-gray-600">Active Members</div>
+              </div>
+              <div className="text-center">
+                <div className="text-3xl font-bold text-primary-600">156</div>
+                <div className="text-gray-600">Discussions</div>
+              </div>
+              <div className="text-center">
+                <div className="text-3xl font-bold text-primary-600">1.2K+</div>
+                <div className="text-gray-600">Comments</div>
+              </div>
+            </div>
           </div>
-          <p className="text-lg text-gray-600">
-            Join the conversation about media literacy and fact-checking
-          </p>
         </div>
       </div>
 
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* Question of the Day */}
-        <div className="card mb-8">
-          <div className="flex items-start justify-between mb-4">
-            <div className="flex items-center space-x-3">
-              <Calendar className="h-6 w-6 text-primary-600" />
-              <div>
-                <h2 className="text-xl font-bold text-gray-900">Question of the Day</h2>
-                <p className="text-sm text-gray-500">{questionOfTheDay.date}</p>
+      <div className="py-20 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="bg-gradient-to-r from-green-50 to-emerald-50 rounded-2xl p-8 border border-green-100 mb-12">
+            <div className="flex items-start space-x-4">
+              <div className="w-12 h-12 bg-green-100 rounded-xl flex items-center justify-center flex-shrink-0">
+                <Award className="h-6 w-6 text-green-600" />
               </div>
-            </div>
-            <div className="flex items-center space-x-4 text-sm text-gray-500">
-              <div className="flex items-center space-x-1">
-                <MessageCircle className="h-4 w-4" />
-                <span>{questionOfTheDay.responses}</span>
-              </div>
-              <div className="flex items-center space-x-1">
-                <ThumbsUp className="h-4 w-4" />
-                <span>{questionOfTheDay.likes}</span>
-              </div>
-            </div>
-          </div>
-
-          <div className="bg-gradient-to-r from-primary-50 to-blue-50 rounded-lg p-6 mb-6">
-            <div className="flex items-start space-x-3">
-              <div className="w-8 h-8 bg-primary-100 rounded-full flex items-center justify-center flex-shrink-0">
-                <span className="text-primary-600 font-semibold">Q</span>
-              </div>
-              <div>
-                <h3 className="text-lg font-semibold text-gray-900 mb-2">
-                  {questionOfTheDay.question}
-                </h3>
-                <span className="inline-block bg-primary-100 text-primary-700 px-2 py-1 rounded text-sm">
-                  {questionOfTheDay.category}
-                </span>
-              </div>
-            </div>
-          </div>
-
-          <div className="flex items-center space-x-4">
-            <button className="btn-primary flex items-center space-x-2">
-              <MessageCircle className="h-4 w-4" />
-              <span>Join Discussion</span>
-            </button>
-            <button className="btn-secondary flex items-center space-x-2">
-              <Share2 className="h-4 w-4" />
-              <span>Share</span>
-            </button>
-          </div>
-        </div>
-
-        {/* Discussion Thread */}
-        <div className="card">
-          <h3 className="text-lg font-semibold text-gray-900 mb-6">Community Responses</h3>
-
-          {/* Add Comment Form */}
-          <div className="border-b border-gray-200 pb-6 mb-6">
-            <form onSubmit={handleSubmitComment} className="space-y-4">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <input
-                  type="text"
-                  placeholder="Your name (optional)"
-                  value={userName}
-                  onChange={(e) => setUserName(e.target.value)}
-                  className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
-                />
-                <div className="text-sm text-gray-500 flex items-center">
-                  <User className="h-4 w-4 mr-2" />
-                  Anonymous users are welcome
+              <div className="flex-1">
+                <div className="flex items-center space-x-3 mb-3">
+                  <span className="inline-flex px-3 py-1 bg-green-100 text-green-700 text-sm font-medium rounded-full">
+                    Question of the Day
+                  </span>
+                  <span className="text-sm text-gray-500">by {communityData.questionOfTheDay.author}</span>
                 </div>
+                <h2 className="text-2xl font-bold text-gray-900 mb-4">
+                  {communityData.questionOfTheDay.question}
+                </h2>
+                <div className="flex items-center space-x-6 text-sm text-gray-600 mb-6">
+                  <div className="flex items-center space-x-2">
+                    <MessageCircle className="h-4 w-4" />
+                    <span>{questionResponses.length} responses</span>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <Heart className="h-4 w-4" />
+                    <span>{communityData.questionOfTheDay.likes} likes</span>
+                  </div>
+                </div>
+
+                {/* Response Form */}
+                {!showQuestionForm ? (
+                  <button
+                    onClick={() => setShowQuestionForm(true)}
+                    className="bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-xl font-medium transition-all duration-200 hover:shadow-lg"
+                  >
+                    Add Your Response
+                  </button>
+                ) : (
+                  <form onSubmit={handleSubmitQuestionResponse} className="space-y-4">
+                    <textarea
+                      value={questionResponse}
+                      onChange={(e) => setQuestionResponse(e.target.value)}
+                      placeholder="Share your thoughts on this question..."
+                      className="w-full h-24 px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-green-500 resize-none"
+                      required
+                    />
+                    <div className="flex space-x-3">
+                      <button
+                        type="submit"
+                        className="bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded-xl font-medium transition-all duration-200"
+                      >
+                        Submit Response
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => setShowQuestionForm(false)}
+                        className="bg-gray-100 hover:bg-gray-200 text-gray-700 px-6 py-2 rounded-xl font-medium transition-all duration-200"
+                      >
+                        Cancel
+                      </button>
+                    </div>
+                  </form>
+                )}
+
+                {/* Responses */}
+                {questionResponses.length > 0 && (
+                  <div className="mt-8">
+                    <h3 className="text-lg font-bold text-gray-900 mb-4">Responses</h3>
+                    <div className="space-y-4">
+                      {questionResponses.map((response) => (
+                        <div key={response.id} className="bg-white rounded-xl p-4 border border-gray-200">
+                          <div className="flex items-start space-x-3">
+                            <div className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center">
+                              <User className="h-4 w-4 text-gray-600" />
+                            </div>
+                            <div className="flex-1">
+                              <div className="flex items-center space-x-2 mb-1">
+                                <span className="text-sm font-medium text-gray-900">{response.author}</span>
+                                <span className="text-xs text-gray-500">{response.timeAgo}</span>
+                              </div>
+                              <p className="text-sm text-gray-600 leading-relaxed">{response.content}</p>
+                              <div className="flex items-center space-x-2 mt-2">
+                                <button className="flex items-center space-x-1 text-xs text-gray-500 hover:text-green-600">
+                                  <ThumbsUp className="h-3 w-3" />
+                                  <span>{response.likes}</span>
+                                </button>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
               </div>
-              <div className="relative">
-                <textarea
-                  placeholder="Share your thoughts on today's question..."
-                  value={newComment}
-                  onChange={(e) => setNewComment(e.target.value)}
-                  className="w-full p-4 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent resize-none"
-                  rows={3}
-                />
-                <button
-                  type="submit"
-                  disabled={!newComment.trim()}
-                  className={`absolute bottom-2 right-2 p-2 rounded-lg ${
-                    newComment.trim() 
-                      ? 'bg-primary-600 text-white hover:bg-primary-700' 
-                      : 'bg-gray-200 text-gray-400 cursor-not-allowed'
-                  }`}
-                >
-                  <Send className="h-4 w-4" />
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <div className="lg:col-span-2">
+              <h2 className="text-2xl font-bold text-gray-900 mb-6">Recent Discussions</h2>
+              <div className="space-y-6">
+                {communityData.discussions.map((discussion) => (
+                  <div 
+                    key={discussion.id} 
+                    className="bg-white rounded-2xl border border-gray-200 p-6 hover:shadow-lg transition-all duration-300 cursor-pointer"
+                    onClick={() => handleViewDiscussion(discussion)}
+                  >
+                    <div className="flex items-start space-x-4">
+                      <div className="w-12 h-12 rounded-full bg-gray-100 border-2 border-gray-200 flex items-center justify-center">
+                        <User className="h-6 w-6 text-gray-600" />
+                      </div>
+                      <div className="flex-1">
+                        <div className="flex items-center space-x-3 mb-2">
+                          <h3 className="text-lg font-bold text-gray-900">{discussion.title}</h3>
+                          <span className="inline-flex px-2 py-1 bg-primary-100 text-primary-700 text-xs font-medium rounded-full">
+                            {discussion.category}
+                          </span>
+                        </div>
+                        
+                        <p className="text-gray-600 mb-4 leading-relaxed">{discussion.content}</p>
+                        
+                        <div className="flex items-center justify-between">
+                          <div className="flex items-center space-x-6 text-sm text-gray-500">
+                            <div className="flex items-center space-x-2">
+                              <User className="h-4 w-4" />
+                              <span>{discussion.author}</span>
+                            </div>
+                            <div className="flex items-center space-x-2">
+                              <Clock className="h-4 w-4" />
+                              <span>{discussion.timeAgo}</span>
+                            </div>
+                          </div>
+                          
+                          <div className="flex items-center space-x-4">
+                            <button className="flex items-center space-x-2 text-gray-500 hover:text-primary-600 transition-colors duration-200">
+                              <MessageCircle className="h-4 w-4" />
+                              <span>{discussion.responses}</span>
+                            </button>
+                            <button className="flex items-center space-x-2 text-gray-500 hover:text-red-600 transition-colors duration-200">
+                              <Heart className="h-4 w-4" />
+                              <span>{discussion.likes}</span>
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div className="space-y-6">
+              <div className="bg-white rounded-2xl border border-gray-200 p-6">
+                <h3 className="text-lg font-bold text-gray-900 mb-4">Community Guidelines</h3>
+                <ul className="space-y-3 text-sm text-gray-600">
+                  <li className="flex items-start space-x-2">
+                    <div className="w-1.5 h-1.5 bg-primary-500 rounded-full mt-2 flex-shrink-0"></div>
+                    <span>Be respectful and constructive in discussions</span>
+                  </li>
+                  <li className="flex items-start space-x-2">
+                    <div className="w-1.5 h-1.5 bg-primary-500 rounded-full mt-2 flex-shrink-0"></div>
+                    <span>Share evidence-based information</span>
+                  </li>
+                  <li className="flex items-start space-x-2">
+                    <div className="w-1.5 h-1.5 bg-primary-500 rounded-full mt-2 flex-shrink-0"></div>
+                    <span>Report misinformation when you see it</span>
+                  </li>
+                </ul>
+              </div>
+
+              <div className="bg-gradient-to-r from-primary-50 to-blue-50 rounded-2xl p-6 border border-primary-100">
+                <h3 className="text-lg font-bold text-gray-900 mb-3">Start a Discussion</h3>
+                <p className="text-sm text-gray-600 mb-4">
+                  Have a question or want to share insights? Start a new discussion with the community.
+                </p>
+                <button className="w-full bg-primary-600 hover:bg-primary-700 text-white px-4 py-2 rounded-xl font-medium transition-all duration-200 hover:shadow-lg hover:shadow-primary-500/25">
+                  New Discussion
                 </button>
               </div>
-            </form>
-          </div>
-
-          {/* Comments List */}
-          <div className="space-y-6">
-            {comments.map((comment) => (
-              <div key={comment.id} className="border-b border-gray-100 pb-6 last:border-b-0">
-                <div className="flex items-start space-x-3">
-                  <div className="w-10 h-10 bg-gray-200 rounded-full flex items-center justify-center flex-shrink-0">
-                    <span className="text-gray-600 font-semibold">
-                      {comment.author.charAt(0).toUpperCase()}
-                    </span>
-                  </div>
-                  <div className="flex-1">
-                    <div className="flex items-center space-x-2 mb-2">
-                      <span className="font-semibold text-gray-900">{comment.author}</span>
-                      <span className="text-sm text-gray-500">{comment.timestamp}</span>
-                    </div>
-                    <p className="text-gray-700 mb-3">{comment.content}</p>
-                    <div className="flex items-center space-x-4">
-                      <button
-                        onClick={() => handleLike(comment.id)}
-                        className="flex items-center space-x-1 text-gray-500 hover:text-primary-600 transition-colors"
-                      >
-                        <ThumbsUp className="h-4 w-4" />
-                        <span className="text-sm">{comment.likes}</span>
-                      </button>
-                      <button className="flex items-center space-x-1 text-gray-500 hover:text-gray-700 transition-colors">
-                        <MessageCircle className="h-4 w-4" />
-                        <span className="text-sm">Reply</span>
-                      </button>
-                      <button className="flex items-center space-x-1 text-gray-500 hover:text-gray-700 transition-colors">
-                        <Share2 className="h-4 w-4" />
-                        <span className="text-sm">Share</span>
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* Community Guidelines */}
-        <div className="card mt-8">
-          <h3 className="text-lg font-semibold text-gray-900 mb-4">Community Guidelines</h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm text-gray-600">
-            <div className="space-y-2">
-              <h4 className="font-medium text-gray-900">Be Respectful</h4>
-              <p>Treat others with kindness and respect. Disagreements are welcome, but personal attacks are not.</p>
-            </div>
-            <div className="space-y-2">
-              <h4 className="font-medium text-gray-900">Stay on Topic</h4>
-              <p>Keep discussions focused on media literacy, fact-checking, and related topics.</p>
-            </div>
-            <div className="space-y-2">
-              <h4 className="font-medium text-gray-900">Cite Sources</h4>
-              <p>When making claims, provide credible sources to support your arguments.</p>
-            </div>
-            <div className="space-y-2">
-              <h4 className="font-medium text-gray-900">Be Constructive</h4>
-              <p>Share insights and experiences that help others learn and improve their media literacy skills.</p>
             </div>
           </div>
         </div>
       </div>
+
+      {/* Discussion Detail Modal */}
+      {showDiscussionDetail && selectedDiscussion && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+          <div className="bg-white rounded-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto">
+            <div className="p-6 border-b border-gray-200">
+              <div className="flex items-center justify-between mb-4">
+                <div className="flex items-center space-x-3">
+                  <span className={`inline-flex px-3 py-1 bg-primary-100 text-primary-700 text-sm font-medium rounded-full`}>
+                    {selectedDiscussion.category}
+                  </span>
+                  {selectedDiscussion.isPinned && (
+                    <span className="inline-flex px-2 py-1 bg-yellow-100 text-yellow-700 text-xs font-medium rounded-full">
+                      Pinned
+                    </span>
+                  )}
+                </div>
+                <button
+                  onClick={handleCloseDiscussion}
+                  className="text-gray-400 hover:text-gray-600 p-2 hover:bg-gray-100 rounded-xl transition-colors"
+                >
+                  <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                </button>
+              </div>
+              
+              <h2 className="text-2xl font-bold text-gray-900 mb-3">{selectedDiscussion.title}</h2>
+              <p className="text-gray-600 mb-4 leading-relaxed">{selectedDiscussion.content}</p>
+              
+              <div className="flex items-center space-x-6 text-sm text-gray-500 mb-6">
+                <div className="flex items-center space-x-2">
+                  <User className="h-4 w-4" />
+                  <span>{selectedDiscussion.author}</span>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <Clock className="h-4 w-4" />
+                  <span>{selectedDiscussion.timeAgo}</span>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <MessageCircle className="h-4 w-4" />
+                  <span>{selectedDiscussion.responses} responses</span>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <Heart className="h-4 w-4" />
+                  <span>{selectedDiscussion.likes} likes</span>
+                </div>
+              </div>
+            </div>
+
+            <div className="p-6">
+              <h3 className="text-lg font-bold text-gray-900 mb-4">Responses</h3>
+              <div className="space-y-4">
+                {selectedDiscussion.detailedResponses.map((response) => (
+                  <div key={response.id} className="bg-gray-50 rounded-xl p-4">
+                    <div className="flex items-start space-x-3">
+                      <div className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center">
+                        <User className="h-4 w-4 text-gray-600" />
+                      </div>
+                      <div className="flex-1">
+                        <div className="flex items-center space-x-2 mb-2">
+                          <span className="text-sm font-medium text-gray-900">{response.author}</span>
+                          <span className="text-xs text-gray-500">{response.timeAgo}</span>
+                        </div>
+                        <p className="text-sm text-gray-700 leading-relaxed">{response.content}</p>
+                        <div className="flex items-center space-x-2 mt-2">
+                          <button className="flex items-center space-x-1 text-xs text-gray-500 hover:text-green-600">
+                            <ThumbsUp className="h-3 w-3" />
+                            <span>{response.likes}</span>
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
