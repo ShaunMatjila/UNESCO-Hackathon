@@ -19,21 +19,21 @@ const Learn = () => {
           id: 1,
           title: 'Understanding the Anatomy of Fake News',
           content: 'Learn about the common characteristics and patterns of fake news articles, including sensational headlines, emotional manipulation, and lack of credible sources.',
-          learnMoreUrl: '#',
+          learnMoreUrl: '/learn/1',
           completed: false
         },
         {
           id: 2,
           title: 'Source Verification Techniques',
           content: 'Master the art of verifying news sources, checking author credentials, and evaluating website credibility to distinguish reliable information from misinformation.',
-          learnMoreUrl: '#',
+          learnMoreUrl: '/learn/1',
           completed: false
         },
         {
           id: 3,
           title: 'Fact-Checking Tools and Resources',
           content: 'Discover essential fact-checking tools, databases, and resources that professional journalists use to verify information quickly and accurately.',
-          learnMoreUrl: '#',
+          learnMoreUrl: '/learn/1',
           completed: false
         }
       ]
@@ -50,21 +50,21 @@ const Learn = () => {
           id: 1,
           title: 'What Are Deepfakes?',
           content: 'Understand the technology behind deepfakes, how they work, and why they pose such a significant threat to information integrity in the digital age.',
-          learnMoreUrl: '#',
+          learnMoreUrl: '/learn/2',
           completed: false
         },
         {
           id: 2,
           title: 'Detecting AI-Generated Content',
           content: 'Learn practical techniques to identify AI-generated images, videos, and text, including visual artifacts, inconsistencies, and technological limitations.',
-          learnMoreUrl: '#',
+          learnMoreUrl: '/learn/2',
           completed: false
         },
         {
           id: 3,
           title: 'The Future of Synthetic Media',
           content: 'Explore emerging trends in AI-generated content, potential countermeasures, and how to stay ahead of evolving deepfake technology.',
-          learnMoreUrl: '#',
+          learnMoreUrl: '/learn/2',
           completed: false
         }
       ]
@@ -81,21 +81,21 @@ const Learn = () => {
           id: 1,
           title: 'The Fact-Checking Process',
           content: 'Learn the systematic approach to fact-checking, including claim identification, source evaluation, and evidence verification techniques.',
-          learnMoreUrl: '#',
+          learnMoreUrl: '/check',
           completed: false
         },
         {
           id: 2,
           title: 'Evaluating Sources and Evidence',
           content: 'Develop skills to assess source credibility, identify bias, and evaluate the quality and relevance of evidence presented in claims.',
-          learnMoreUrl: '#',
+          learnMoreUrl: '/check',
           completed: false
         },
         {
           id: 3,
           title: 'Presenting Fact-Check Results',
           content: 'Learn how to communicate fact-check findings effectively, present evidence clearly, and help others understand the verification process.',
-          learnMoreUrl: '#',
+          learnMoreUrl: '/check',
           completed: false
         }
       ]

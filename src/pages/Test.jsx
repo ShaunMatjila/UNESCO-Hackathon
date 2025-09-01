@@ -176,13 +176,13 @@ const Test = () => {
                 <ArrowRight className="h-5 w-5" />
                 Take Quiz Again
               </button>
-              <a
-                href="/learn"
+              <Link
+                to="/learn"
                 className="btn-secondary flex items-center justify-center gap-2"
               >
                 <BookOpen className="h-5 w-5" />
                 Learn More
-              </a>
+              </Link>
             </div>
           </div>
 
